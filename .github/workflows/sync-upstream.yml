@@ -1,6 +1,6 @@
 # Keeps this fork up to date: merges cloverscripts/riff-muriel main into our main.
 # Your own changes stay. On a conflict it opens an issue and changes nothing.
-# After a merge the Windows / Android / iPhone builds run, and the app offers the update.
+# After a merge the Windows / Android builds run, and the app offers the update.
 name: Sync upstream
 
 on:
@@ -50,7 +50,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          for w in windows.yml android.yml ios.yml; do gh workflow run "$w" --ref main || true; done
+          for w in windows.yml android.yml; do gh workflow run "$w" --ref main || true; done
 
       - name: Report conflict
         if: steps.merge.outputs.conflict == 'true'
