@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Link to Muriel</title>
+  <title>Link to Riff</title>
   <meta name="robots" content="noindex">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="icon.png">
@@ -25,12 +25,12 @@
 <body>
   <main>
     <img src="icon.png" alt="">
-    <h1>Link to Muriel</h1>
-    <p id="lead">Opening Muriel…</p>
+    <h1>Link to Riff</h1>
+    <p id="lead">Opening Riff…</p>
     <div class="code" id="code"></div>
-    <a class="btn" id="open" href="#">Open Muriel</a>
-    <p class="small">If Muriel doesn't open: in Muriel go to <b>Settings → Sync → Enter a code</b> and type the code above. It works for 5 minutes.</p>
-    <p class="small">No Muriel yet? <a href="./">Get it here</a>.</p>
+    <a class="btn" id="open" href="#">Open Riff</a>
+    <p class="small">If Riff doesn't open: in Riff go to <b>Settings → Sync → Enter a code</b> and type the code above. It works for 5 minutes.</p>
+    <p class="small">No Riff yet? <a href="./">Get it here</a>.</p>
   </main>
   <script>
     // the code comes after the # so it never reaches a server
@@ -41,7 +41,7 @@
       open.href = 'muriel://link?code=' + raw;
       setTimeout(function () { location.href = open.href; }, 300);
     } else {
-      document.getElementById('lead').textContent = 'This link has no code. Show a new one in Muriel: Settings → Sync → Link a device.';
+      document.getElementById('lead').textContent = 'This link has no code. Show a new one in Riff: Settings → Sync → Link a device.';
       open.style.display = 'none';
     }
   </script>

@@ -16,7 +16,7 @@
   "keywords": [],
   "author": "cloverscripts",
   "license": "MIT",
-  "description": "Muriel - a lightweight music player.",
+  "description": "Riff - a lightweight music player.",
   "devDependencies": {
     "@capacitor/android": "^8.5.3",
     "@capacitor/app": "^8.1.2",
@@ -26,7 +26,7 @@
     "@capacitor/ios": "^8.5.3",
     "@capacitor/share": "^8.0.3",
     "buffer": "^6.0.3",
-    "electron": "^41.7.1",
+    "electron": "^41.10.7",
     "electron-builder": "^26.15.3",
     "esbuild": "^0.28.2",
     "events": "^3.3.0",
@@ -40,7 +40,7 @@
     "hls.js": "^1.7.1",
     "tone": "^15.1.22"
   },
-  "productName": "Muriel",
+  "productName": "Riff",
   "homepage": "https://github.com/cloverscripts/riff-muriel",
   "repository": {
     "type": "git",
@@ -51,7 +51,7 @@
   },
   "build": {
     "appId": "io.github.cloverscripts.muriel",
-    "productName": "Muriel",
+    "productName": "Riff",
     "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
     "directories": {
       "output": "dist"

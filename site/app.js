@@ -35,7 +35,7 @@
   }
   if (os) {
     $('main-dl-label').textContent = `Download for ${OS_NAME[os]}`;
-    $('main-dl').setAttribute('aria-label', `Download Muriel for ${OS_NAME[os]}`);
+    $('main-dl').setAttribute('aria-label', `Download Riff for ${OS_NAME[os]}`);
     $('np-get').textContent = os === 'ios' ? 'Get' : 'Download';
   }
   updateMainLinks();
@@ -69,9 +69,9 @@
   // file's count when it is replaced. Each build therefore writes the total so far into its release
   // notes (see .github/carry-downloads.sh); seed covers releases made before that existed.
   const ROLLING = {
-    'android-latest': { file: 'Muriel.apk', platform: 'android', seed: 3530 },
-    'ios-latest': { file: 'Muriel.ipa', platform: 'ios', seed: 1640 },
-    'windows-latest': { file: 'Muriel.exe', platform: 'windows', seed: 6 },
+    'android-latest': { file: 'Riff.apk', platform: 'android', seed: 3530 },
+    'ios-latest': { file: 'Riff.ipa', platform: 'ios', seed: 1640 },
+    'windows-latest': { file: 'Riff.exe', platform: 'windows', seed: 6 },
   };
   const PLATFORMS = [['android', 'Android'], ['ios', 'iPhone'], ['windows', 'Windows'], ['mac', 'Mac'], ['linux', 'Linux']];
   // installers only: .yml and .blockmap files are fetched by the desktop auto-updater, not by people
@@ -87,7 +87,8 @@
       const rolling = ROLLING[rel.tag_name];
       if (rolling) {
         const m = /muriel-downloads-before:\s*(\d+)/.exec(rel.body || '');
-        const asset = rel.assets.find((a) => a.name === rolling.file);
+        // Muriel.apk etc.: the file's name before the app was renamed to Riff, until the next build replaces it
+        const asset = rel.assets.find((a) => a.name === rolling.file || a.name === rolling.file.replace(/^Riff\./, 'Muriel.'));
         per[rolling.platform] += (m ? Number(m[1]) : rolling.seed) + (asset ? asset.download_count : 0);
         continue;
       }
@@ -179,9 +180,9 @@
       const a = byTag[tag] && byTag[tag].assets.find((x) => x.name === file);
       if (a && $(id)) $(id).textContent = `· ${mb(a.size)}`;
     };
-    size('android-latest', 'Muriel.apk', 'size-android');
-    size('windows-latest', 'Muriel.exe', 'size-windows');
-    size('ios-latest', 'Muriel.ipa', 'size-ios');
+    size('android-latest', 'Riff.apk', 'size-android');
+    size('windows-latest', 'Riff.exe', 'size-windows');
+    size('ios-latest', 'Riff.ipa', 'size-ios');
     const newest = Object.keys(ROLLING).map((t) => byTag[t] && byTag[t].published_at).filter(Boolean).sort().pop();
     if (newest) $('build-info').textContent = `Free · open source · newest build ${ago(newest)}`;
 
@@ -197,7 +198,7 @@
     set('dl-linux', appImage);
     if (appImage) {
       $('size-linux').textContent = `· ${mb(appImage.size)}`;
-      $('linux-line').textContent = `mkdir -p ~/Applications && curl -L -o ~/Applications/Muriel.AppImage ${appImage.browser_download_url} && chmod +x ~/Applications/Muriel.AppImage && ~/Applications/Muriel.AppImage`;
+      $('linux-line').textContent = `mkdir -p ~/Applications && curl -L -o ~/Applications/Riff.AppImage ${appImage.browser_download_url} && chmod +x ~/Applications/Riff.AppImage && ~/Applications/Riff.AppImage`;
     }
     $('rel-version').textContent = rel.tag_name;
     updateMainLinks();

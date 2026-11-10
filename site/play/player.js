@@ -863,7 +863,7 @@
     a.href = IS_PHONE ? share.appLink(S.payload) : share.webLink(S.payload);
     a.classList.remove('done');
     a.querySelector('use').setAttribute('href', '#i-plus');
-    a.querySelector('span').textContent = 'Add to Muriel';
+    a.querySelector('span').textContent = 'Add to Riff';
     $('add-note').hidden = true;
   }
   async function onAdd(e) {
@@ -874,9 +874,9 @@
       clearTimeout(addTimer);
       addTimer = setTimeout(() => {
         if (document.visibilityState !== 'visible') return;
-        const get = h('a', '', 'Get Muriel');
+        const get = h('a', '', 'Get Riff');
         get.href = '../#download';
-        note(['Nothing opened? ', get, ' first, then tap Add to Muriel again.']);
+        note(['Nothing opened? ', get, ' first, then tap Add to Riff again.']);
       }, 2500);
       return;
     }
@@ -884,7 +884,7 @@
     const link = share.webLink(S.payload);
     const a = $('btn-add');
     if (await copyText(link)) {
-      note(['Link copied. Paste it into Muriel’s search bar to add the playlist.'], true);
+      note(['Link copied. Paste it into Riff’s search bar to add the playlist.'], true);
       a.classList.add('done');
       a.querySelector('use').setAttribute('href', '#i-check');
       a.querySelector('span').textContent = 'Copied';
@@ -892,7 +892,7 @@
       addReset = setTimeout(() => {
         a.classList.remove('done');
         a.querySelector('use').setAttribute('href', '#i-plus');
-        a.querySelector('span').textContent = 'Add to Muriel';
+        a.querySelector('span').textContent = 'Add to Riff';
       }, 2600);
     } else {
       const box = h('input');
@@ -900,7 +900,7 @@
       box.readOnly = true;
       box.value = link;
       box.setAttribute('aria-label', 'Playlist link');
-      note(['Copy this link, then paste it into Muriel’s search bar: ', box]);
+      note(['Copy this link, then paste it into Riff’s search bar: ', box]);
       box.focus();
       box.select();
     }
@@ -921,7 +921,7 @@
     stopEverything();
     S.payload = '';
     S.gen++;
-    document.title = 'Muriel Web Player';
+    document.title = 'Riff Web Player';
     document.body.classList.add('on-landing');
     $('view').hidden = true;
     $('bar').hidden = true;
@@ -955,7 +955,7 @@
     $('b-shuffle').setAttribute('aria-pressed', 'false');
     rebuildOrder();
 
-    document.title = `${pl.name} · Muriel`;
+    document.title = `${pl.name} · Riff`;
     document.body.classList.remove('on-landing');
     $('landing').hidden = true;
     $('view').hidden = false;
@@ -997,7 +997,7 @@
     if (!raw) { showLanding(null); return; }
     const p = share.payloadFrom(location.hash) || share.payloadFrom(decodeHashSafe(raw));
     if (!p) {
-      showLanding({ title: 'That link didn’t work', text: 'It doesn’t look like a Muriel playlist link. Check that you copied all of it.' });
+      showLanding({ title: 'That link didn’t work', text: 'It doesn’t look like a Riff playlist link. Check that you copied all of it.' });
       return;
     }
     if (p === S.payload) return;
@@ -1010,7 +1010,7 @@
       const old = /too old/i.test(String(e && e.message));
       showLanding({
         title: old ? 'This browser can’t open the link' : 'We couldn’t open this playlist',
-        text: old ? 'Try a recent version of Safari, Chrome, Firefox or Edge.' : 'The link looks incomplete. Copy it again from Muriel and paste it below.',
+        text: old ? 'Try a recent version of Safari, Chrome, Firefox or Edge.' : 'The link looks incomplete. Copy it again from Riff and paste it below.',
       });
       return;
     }
@@ -1170,7 +1170,7 @@
       const v = $('paste-input').value;
       const p = share ? share.payloadFrom(v) : '';
       if (!p) {
-        $('paste-hint').textContent = v.trim() ? 'That doesn’t look like a Muriel playlist link.' : 'Paste a link that someone shared from Muriel.';
+        $('paste-hint').textContent = v.trim() ? 'That doesn’t look like a Riff playlist link.' : 'Paste a link that someone shared from Riff.';
         return;
       }
       $('paste-hint').textContent = '';

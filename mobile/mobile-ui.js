@@ -232,7 +232,7 @@
         <button class="btn-pill-primary" type="button" data-i18n>Share</button>
       </div>`;
     logRow.querySelector('button').addEventListener('click', async () => {
-      const res = await window.electronAPI.shareText('Muriel error log', window.MurielLog ? window.MurielLog.text() : 'no log');
+      const res = await window.electronAPI.shareText('Riff error log', window.MurielLog ? window.MurielLog.text() : 'no log');
       if (res === 'copied' && window.MurielCore) window.MurielCore.toast((window.MurielI18n || { T: (x) => x, Tm: (x) => x }).Tm('Log copied to clipboard'), 'info');
     });
     storageGroup.append(limitRow);
@@ -267,7 +267,7 @@
       la.setEnabled(on);
     });
     la.available().then((ok) => {
-      if (!ok) row.querySelector('.la-hint').textContent = 'Turn on Live Activities for Muriel in the iPhone Settings app first (needs iOS 16.2 or newer).';
+      if (!ok) row.querySelector('.la-hint').textContent = 'Turn on Live Activities for Riff in the iPhone Settings app first (needs iOS 16.2 or newer).';
     });
     addPlaybackRow(row);
   }
@@ -281,7 +281,7 @@
       <div class="setting-item-top" style="align-items: center;">
         <div style="display: flex; flex-direction: column; gap: 2px;">
           <span class="setting-name" data-i18n>Play in the background</span>
-          <span style="font-size: calc(12px * var(--font-scale, 1)); color: var(--md-sys-color-outline);" data-i18n>Some phones stop apps to save battery, even while music plays. Allow Muriel to keep running.</span>
+          <span style="font-size: calc(12px * var(--font-scale, 1)); color: var(--md-sys-color-outline);" data-i18n>Some phones stop apps to save battery, even while music plays. Allow Riff to keep running.</span>
         </div>
         <button class="btn-pill-primary" type="button" data-i18n>Allow</button>
       </div>`;
@@ -303,7 +303,7 @@
       if (!s.vendor || s.vendor === 'xiaomi' || s.vendor === 'samsung' || (!s.supported && s.vendor !== 'vivo')) return;
       const name = { vivo: 'Origin Island', oplus: 'Fluid Cloud' }[s.vendor] || 'Song in the status bar';
       const about = {
-        vivo: 'The song in the Origin Island at the top of the screen. vivo’s music capsule only takes apps on vivo’s list, so Muriel shows there as a live update.',
+        vivo: 'The song in the Origin Island at the top of the screen. vivo’s music capsule only takes apps on vivo’s list, so Riff shows there as a live update.',
         oplus: 'The song in Fluid Cloud at the top of the screen, as a live update.',
       }[s.vendor] || 'The song as a live update in the status bar.';
       const row = document.createElement('div');
@@ -330,10 +330,10 @@
         const on = isl.enabled(st);
         sw.classList.toggle('active', on);
         let need = '';
-        if (on && !st.notifications) { need = ' Allow Muriel’s notifications for it.'; fix.textContent = 'Allow'; }
+        if (on && !st.notifications) { need = ' Allow Riff’s notifications for it.'; fix.textContent = 'Allow'; }
         else if (on && !st.promoted) {
-          need = st.vendor === 'oplus' ? ' Turn on “Show Live Updates on Live Alerts” for Muriel in the phone’s settings.'
-            : ' Live updates are turned off for Muriel in the phone’s settings.';
+          need = st.vendor === 'oplus' ? ' Turn on “Show Live Updates on Live Alerts” for Riff in the phone’s settings.'
+            : ' Live updates are turned off for Riff in the phone’s settings.';
           fix.textContent = 'Settings';
         }
         hint.textContent = about + need;

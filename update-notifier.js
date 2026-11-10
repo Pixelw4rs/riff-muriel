@@ -6,7 +6,7 @@
   const CHECK_EVERY = 6 * 3600 * 1000;
   const SNOOZE = 3 * 24 * 3600 * 1000;
   const TAGS = { ios: 'ios-latest', android: 'android-latest', windows: 'windows-latest' };
-  const ASSETS = { android: 'Muriel.apk', windows: 'Muriel.exe' }; // iOS goes to the release page (sideload)
+  const ASSETS = { android: 'Riff.apk', windows: 'Riff.exe' }; // iOS goes to the release page (sideload)
   const store = {
     get(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } },
     set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
@@ -50,9 +50,9 @@
 
   // "Muriel 1.2.4" when the new build is a new version, else its build number
   function label(update) {
-    if (update.version && update.version !== build.version) return `Muriel ${update.version}`;
+    if (update.version && update.version !== build.version) return `Riff ${update.version}`;
     if (update.run && build.run && update.run > build.run) return `Build ${update.run}`;
-    return 'A newer Muriel build';
+    return 'A newer Riff build';
   }
 
   let banner = null;
@@ -111,7 +111,7 @@
   }
 
   if (checkBtn) checkBtn.addEventListener('click', () => (current ? open(current.url) : check(true)));
-  if (statusEl) setStatus(enabled ? `${build.version ? `Muriel ${build.version} · ` : ''}Build ${build.run || '?'} · ${String(build.sha).slice(0, 7)}` : 'Development build');
+  if (statusEl) setStatus(enabled ? `${build.version ? `Riff ${build.version} · ` : ''}Build ${build.run || '?'} · ${String(build.sha).slice(0, 7)}` : 'Development build');
 
   // first check a little after start-up, then whenever the app comes back to the foreground
   setTimeout(() => check(false), 8000);

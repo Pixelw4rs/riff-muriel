@@ -360,7 +360,7 @@
     render();
     const tp = new window.Peer(`muriel-j-${hex(12)}`, serverOpts());
     const done = (error) => { clearTimeout(timer); try { tp.destroy(); } catch (e) {} joining = error ? { code, error } : null; render(); };
-    const timer = setTimeout(() => done("No device answered. Check the code, and that Muriel shows it on the other device."), 20000);
+    const timer = setTimeout(() => done("No device answered. Check the code, and that Riff shows it on the other device."), 20000);
     tp.on('error', (err) => done(err && err.type === 'peer-unavailable' ? 'No device is showing that code right now.' : "Couldn't reach the link service. Check your internet connection."));
     tp.on('open', () => {
       const conn = tp.connect(`muriel-link-${code.toLowerCase()}`, { reliable: true });

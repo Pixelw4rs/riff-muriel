@@ -134,8 +134,8 @@ test('a restore only writes Muriel keys, checks the playlists through, and keeps
   assert.equal(B.keepOnRestore('muriel_perf_mode', P.isDevice), true);
   assert.equal(B.keepOnRestore('someplugin_state', P.isDevice), true);
   assert.equal(B.keepOnRestore('devsize_playlists', P.isDevice), false);
-  assert.throws(() => B.readBackup({ hello: 1 }), /isn't a Muriel backup/);
-  assert.throws(() => B.readBackup(null), /isn't a Muriel backup/);
+  assert.throws(() => B.readBackup({ hello: 1 }), /isn't a Riff backup/);
+  assert.throws(() => B.readBackup(null), /isn't a Riff backup/);
   const big = 'x'.repeat(B.LIMITS.keyBytes - 10);
   assert.throws(() => B.readBackup({ kind: 'muriel-backup', data: { muriel_a: big, muriel_b: big, muriel_c: big, muriel_d: big } }), /too big/);
   assert.ok(B.readBackup({ kind: 'muriel-backup', data: { muriel_a: big + 'x'.repeat(20) } }).skipped.includes('muriel_a'), 'one key over the cap is left out');
@@ -166,7 +166,7 @@ test('Riff account files (.rfacc) open, and their riff_ keys become Muriel\'s', 
   const broken = file.slice();
   broken[broken.length - 1] ^= 1;
   await assert.rejects(B.parseBackupFile(broken), /damaged/);
-  await assert.rejects(B.parseBackupFile(new TextEncoder().encode('{nope')), /isn't a Muriel backup/);
+  await assert.rejects(B.parseBackupFile(new TextEncoder().encode('{nope')), /isn't a Riff backup/);
   const own = await B.parseBackupFile(new TextEncoder().encode(JSON.stringify(B.makeBackup([['muriel_theme_mode', 'dark']]))));
   assert.equal(B.readBackup(own).entries.muriel_theme_mode, 'dark');
 });

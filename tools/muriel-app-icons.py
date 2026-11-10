@@ -1,6 +1,6 @@
-"""Makes Muriel's Home-button icons (assets/app-icons/) from Riff's: every Riff logo shape in an icon (the long
-M/C path, also used for its glow, mask and outline) is swapped for Muriel's sparkle (assets/mark.svg), fitted
-into the same box, so the backgrounds and decorations stay and the logo is Muriel's.
+"""Makes Riff's Home-button icons (assets/app-icons/) from Riff's: every Riff logo shape in an icon (the long
+M/C path, also used for its glow, mask and outline) is swapped for Riff's sparkle (assets/mark.svg), fitted
+into the same box, so the backgrounds and decorations stay and the logo is Riff's.
 Usage: python3 tools/muriel-app-icons.py <dir with Riff's NN-name.svg files> [out dir]"""
 import os, re, sys
 

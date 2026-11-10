@@ -4,12 +4,13 @@ const os = require('os');
 const path = require('path');
 const { execFile } = require('child_process');
 
-const NAME = 'Muriel';
-const COMMENT = 'Muriel - music player';
+const NAME = 'Riff';
+const COMMENT = 'Riff - music player';
 const APP_ID = '';
+const OLD_NAME = 'Muriel'; // the app's name before it was renamed to Riff
 
-function winShortcutPath() {
-  return path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', `${NAME}.lnk`);
+function winShortcutPath(name = NAME) {
+  return path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', `${name}.lnk`);
 }
 
 function linuxDesktopPath() {
@@ -26,7 +27,7 @@ function getLauncherInfo() {
     return { platform: 'win32', canInstall: true, installed: fs.existsSync(winShortcutPath()), reason: '' };
   }
   if (process.platform === 'linux') {
-    if (!process.env.APPIMAGE) return { platform: 'linux', canInstall: false, installed: false, reason: 'Available when Muriel runs as an AppImage' };
+    if (!process.env.APPIMAGE) return { platform: 'linux', canInstall: false, installed: false, reason: 'Available when Riff runs as an AppImage' };
     return { platform: 'linux', canInstall: true, installed: fs.existsSync(linuxDesktopPath()), reason: '' };
   }
   return { platform: process.platform, canInstall: false, installed: false, reason: 'Not supported on this system' };
@@ -90,4 +91,19 @@ function installLauncher() {
   return { ok: false };
 }
 
-module.exports = { getLauncherInfo, installLauncher };
+// A launcher made while the app was still called Muriel: the Start menu shortcut gets the new name, and the
+// Linux menu entry (same file, muriel.desktop) is written again so it shows Riff.
+function renameOldLauncher() {
+  try {
+    if (!getLauncherInfo().canInstall) return;
+    if (process.platform === 'win32') {
+      const old = winShortcutPath(OLD_NAME);
+      if (fs.existsSync(old) && !fs.existsSync(winShortcutPath())) fs.renameSync(old, winShortcutPath());
+    } else if (process.platform === 'linux') {
+      const desktop = linuxDesktopPath();
+      if (fs.existsSync(desktop) && fs.readFileSync(desktop, 'utf-8').includes(`Name=${OLD_NAME}\n`)) installLinux();
+    }
+  } catch (e) {}
+}
+
+module.exports = { getLauncherInfo, installLauncher, renameOldLauncher };

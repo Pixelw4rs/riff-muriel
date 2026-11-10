@@ -5,8 +5,11 @@ const os = require('os');
 const { pathToFileURL, fileURLToPath } = require('url');
 const { spawn } = require('child_process');
 const crypto = require('crypto');
+// The app was called Muriel before. Electron names this folder after the product name, and it holds the
+// renderer's storage (library, playlists, settings), so it stays where existing installs already have it.
+app.setPath('userData', path.join(app.getPath('appData'), 'Muriel'));
 const { LIBRARY_DIR, DATA_DIR, resolveBinary, tutorialDone, markTutorialDone, readStartupConfig, writeStartupConfig } = require('./platform');
-const { getLauncherInfo, installLauncher } = require('./launcher');
+const { getLauncherInfo, installLauncher, renameOldLauncher } = require('./launcher');
 const { getSystemAudioOutputInfo } = require('./audio-output');
 const { log, tail, LOG_DIR } = require('./logger');
 const logger = { log, tail, LOG_DIR, error: (msg, err) => log('ERROR', `${msg}: ${err && err.message ? err.message : err}`) };
@@ -225,7 +228,7 @@ function runGUI() {
       minWidth: 360,
                                    minHeight: 500,
                                    backgroundColor: firstRun ? '#8d5ef2' : '#000000',
-                                   title: 'Muriel',
+                                   title: 'Riff',
                                    icon: path.join(__dirname, 'assets', 'icon.png'),
                                    // macOS keeps its frame so the native traffic lights, rounded corners and shadow are
                                    // used; Windows and Linux draw their own controls
@@ -375,7 +378,7 @@ function runGUI() {
     });
 
     ipcMain.handle('get-diagnostics', async () => {
-      const lines = [`Muriel ${app.getVersion()}`, `OS ${process.platform} ${process.arch} ${os.release()}`, `Electron ${process.versions.electron} Chromium ${process.versions.chrome} Node ${process.versions.node}`, `Locale ${app.getLocale()}`, `Data ${DATA_DIR}`];
+      const lines = [`Riff ${app.getVersion()}`, `OS ${process.platform} ${process.arch} ${os.release()}`, `Electron ${process.versions.electron} Chromium ${process.versions.chrome} Node ${process.versions.node}`, `Locale ${app.getLocale()}`, `Data ${DATA_DIR}`];
       for (const name of ['yt-dlp', 'ffmpeg']) {
         const bin = resolveBinary(name);
         lines.push(`${name}: ${bin || 'NOT FOUND'}`);
@@ -742,7 +745,7 @@ function runGUI() {
           let trayIcon = nativeImage.createFromPath(iconPath);
           trayIcon = trayIcon.resize({ width: 22, height: 22 });
           tray = new Tray(trayIcon);
-          tray.setToolTip('Muriel');
+          tray.setToolTip('Riff');
           const contextMenu = Menu.buildFromTemplate([
             {
               label: 'Show/Hide',
@@ -788,6 +791,7 @@ function runGUI() {
       app.whenReady().then(() => {
         setupTray();
         createWindow();
+        renameOldLauncher();
         app.on('activate', () => {
           // the Dock icon brings back a window that was closed to the tray
           if (mainWindow && !mainWindow.isDestroyed()) {

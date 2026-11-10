@@ -6,13 +6,13 @@ const fs = require('fs');
 const { RUN, REPO, SHA } = process.env;
 const base = require('../package.json').version.split('.').slice(0, 2).join('.');
 const version = `${base}.${RUN}`;
-const ipa = `https://github.com/${REPO}/releases/download/ios-latest/Muriel.ipa`;
+const ipa = `https://github.com/${REPO}/releases/download/ios-latest/Riff.ipa`;
 const icon = `https://raw.githubusercontent.com/${REPO}/${SHA}/assets/icon-ios.png`;
 const now = new Date().toISOString();
-const size = fs.statSync('Muriel.ipa').size;
+const size = fs.statSync('Riff.ipa').size;
 
 const app = {
-  name: 'Muriel',
+  name: 'Riff',
   bundleIdentifier: 'io.github.cloverscripts.muriel',
   developerName: 'cloverscripts',
   subtitle: 'Free music player',
@@ -26,7 +26,7 @@ const app = {
 };
 
 fs.writeFileSync('sidestore.json', JSON.stringify({
-  name: 'Muriel',
+  name: 'Riff',
   identifier: 'io.github.cloverscripts.muriel.source',
   iconURL: icon,
   website: `https://${REPO.split('/')[0]}.github.io/${REPO.split('/')[1]}/`,
@@ -34,4 +34,4 @@ fs.writeFileSync('sidestore.json', JSON.stringify({
   apps: [app],
   news: [],
 }, null, 2));
-console.log(`sidestore.json: Muriel ${version}, ${size} bytes`);
+console.log(`sidestore.json: Riff ${version}, ${size} bytes`);

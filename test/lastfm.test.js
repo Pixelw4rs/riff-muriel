@@ -280,7 +280,7 @@ test('server: without a keychain the login lasts until Muriel closes, and says s
     const r = await post(port, '/api/lastfm/mobile-session', { profile: 'default', username: 'u', password: 'p' }, token);
     assert.equal(r.data.success, true);
     assert.equal(r.data.saved, false);
-    assert.match(r.data.error, /until Muriel closes|saved securely/);
+    assert.match(r.data.error, /until Riff closes|saved securely/);
     assert.ok(!fs.existsSync(path.join(dir, 'lastfm-auth.enc')));
   } finally {
     if (server) await server.stopServer();

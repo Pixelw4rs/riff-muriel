@@ -1,5 +1,5 @@
 {
-  description = "Muriel - a desktop audio player (Electron)";
+  description = "Riff - a desktop audio player (Electron)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -27,8 +27,8 @@
               appDir = "$out/share/muriel";
               runtimeDeps = pkgs.lib.makeBinPath [ pkgs.yt-dlp pkgs.ffmpeg ];
               desktop = pkgs.makeDesktopItem {
-                name = "Muriel";
-                desktopName = "Muriel";
+                name = "Riff";
+                desktopName = "Riff";
                 genericName = "Audio Player";
                 exec = "muriel";
                 icon = "muriel";
@@ -57,7 +57,7 @@
             '';
 
           meta = with pkgs.lib; {
-            description = "Muriel - audio player made for humans";
+            description = "Riff - audio player made for humans";
             homepage = "https://github.com/cloverscripts/riff-muriel";
             license = licenses.mit;
             mainProgram = "muriel";
@@ -84,7 +84,7 @@
           ];
 
           shellHook = ''
-            echo "Muriel dev shell. Install deps and run with:"
+            echo "Riff dev shell. Install deps and run with:"
             echo "  npm install && npm start"
           '';
         };

@@ -137,7 +137,7 @@ public class MediaControlsPlugin extends Plugin {
         }
         // one left by an app that was stopped without cleaning up
         try { ctx.getSystemService(NotificationManager.class).cancel(ISLAND_ID); } catch (Exception ignored) {}
-        session = new MediaSessionCompat(ctx, "Muriel");
+        session = new MediaSessionCompat(ctx, "Riff");
         session.setCallback(new MediaSessionCompat.Callback() {
             @Override public void onPlay() { start("play"); }
             @Override public void onPause() { send("pause", -1); }
@@ -369,14 +369,14 @@ public class MediaControlsPlugin extends Plugin {
         Context app = getContext().getApplicationContext();
         try {
             if (wakeLock == null) {
-                wakeLock = app.getSystemService(PowerManager.class).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Muriel:playback");
+                wakeLock = app.getSystemService(PowerManager.class).newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Riff:playback");
                 wakeLock.setReferenceCounted(false);
             }
             wakeLock.acquire(WAKE_LOCK_MS);
         } catch (Exception ignored) {}
         try {
             if (wifiLock == null) {
-                wifiLock = ((WifiManager) app.getSystemService(Context.WIFI_SERVICE)).createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "Muriel:playback");
+                wifiLock = ((WifiManager) app.getSystemService(Context.WIFI_SERVICE)).createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "Riff:playback");
                 wifiLock.setReferenceCounted(false);
             }
             if (!wifiLock.isHeld()) wifiLock.acquire();

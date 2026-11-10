@@ -215,12 +215,12 @@
 
   // A backup file's contents (already parsed) -> what a restore writes. Throws an Error with a message for people.
   function readBackup(obj, { isDevice } = {}) {
-    if (!isObj(obj)) throw new Error("That file isn't a Muriel backup");
+    if (!isObj(obj)) throw new Error("That file isn't a Riff backup");
     let source = '';
     let raw = null;
     if (obj.kind === 'muriel-backup' && isObj(obj.data)) { source = 'muriel'; raw = obj.data; }
     else if (isObj(obj.localStorage) && (obj.app === 'Riff' || obj.app === 'Muriel')) { source = 'riff'; raw = obj.localStorage; }
-    if (!raw) throw new Error("That file isn't a Muriel backup or a Riff account file");
+    if (!raw) throw new Error("That file isn't a Riff backup or account file");
     const entries = {};
     const skipped = [];
     let total = 0;
@@ -296,7 +296,7 @@
   async function parseBackupFile(bytes) {
     if (!bytes || bytes.length > LIMITS.fileBytes) throw new Error('That file is too big');
     if (isRiffAccount(bytes)) return readRiffAccount(bytes);
-    try { return JSON.parse(new TextDecoder().decode(bytes).replace(/^\uFEFF/, '')); } catch (e) { throw new Error("That file isn't a Muriel backup"); }
+    try { return JSON.parse(new TextDecoder().decode(bytes).replace(/^\uFEFF/, '')); } catch (e) { throw new Error("That file isn't a Riff backup"); }
   }
 
   const api = { LIMITS, cleanSharedTrack, parsePlaylistFile, exportTrack, playlistFile, fileName, backupKeyAllowed, keepOnRestore, makeBackup, cleanStoredTrack, cleanStoredPlaylists, readBackup, isRiffAccount, readRiffAccount, parseBackupFile };
