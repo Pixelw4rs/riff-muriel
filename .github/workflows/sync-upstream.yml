@@ -1,0 +1,60 @@
+# Keeps this fork up to date: merges cloverscripts/riff-muriel main into the riff branch.
+# Your own changes stay. On a conflict it opens an issue and changes nothing.
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: '17 4 * * *'   # daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: riff
+          fetch-depth: 0
+          # needs a PAT with "workflow" scope, since upstream can change workflow files
+          token: ${{ secrets.SYNC_TOKEN || github.token }}
+
+      - name: Merge upstream main
+        id: merge
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/cloverscripts/riff-muriel
+          git fetch upstream main
+          if git merge-base --is-ancestor upstream/main HEAD; then
+            echo "Already up to date."; exit 0
+          fi
+          if git merge --no-edit upstream/main; then
+            git push origin riff
+            git push -f origin upstream/main:refs/heads/main   # main = plain upstream copy
+          else
+            git merge --abort
+            echo "conflict=true" >> "$GITHUB_OUTPUT"
+            git diff --name-only HEAD...upstream/main > /tmp/files.txt
+          fi
+
+      - name: Report conflict
+        if: steps.merge.outputs.conflict == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="Upstream sync conflict"
+          if gh issue list --state open --search "$title in:title" --json number -q '.[0].number' | grep -q .; then exit 0; fi
+          gh issue create --title "$title" --body "Upstream changes clash with your changes. Fix locally:
+
+          \`\`\`
+          git checkout riff
+          git pull
+          git fetch upstream
+          git merge upstream/main   # fix conflicts, then commit
+          git push
+          \`\`\`"
+          exit 1
