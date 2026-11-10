@@ -1,5 +1,6 @@
-# Keeps this fork up to date: merges cloverscripts/riff-muriel main into the riff branch.
+# Keeps this fork up to date: merges cloverscripts/riff-muriel main into our main.
 # Your own changes stay. On a conflict it opens an issue and changes nothing.
+# After a merge the Windows / Android / iPhone builds run, and the app offers the update.
 name: Sync upstream
 
 on:
@@ -10,14 +11,17 @@ on:
 permissions:
   contents: write
   issues: write
+  actions: write
 
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      HAS_PAT: ${{ secrets.SYNC_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: riff
+          ref: main
           fetch-depth: 0
           # needs a PAT with "workflow" scope, since upstream can change workflow files
           token: ${{ secrets.SYNC_TOKEN || github.token }}
@@ -33,13 +37,20 @@ jobs:
             echo "Already up to date."; exit 0
           fi
           if git merge --no-edit upstream/main; then
-            git push origin riff
-            git push -f origin upstream/main:refs/heads/main   # main = plain upstream copy
+            git push origin main
+            echo "merged=true" >> "$GITHUB_OUTPUT"
           else
             git merge --abort
             echo "conflict=true" >> "$GITHUB_OUTPUT"
-            git diff --name-only HEAD...upstream/main > /tmp/files.txt
           fi
+
+      # pushes made with the built-in token don't start other workflows, so start the builds here
+      - name: Start builds
+        if: steps.merge.outputs.merged == 'true' && env.HAS_PAT != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for w in windows.yml android.yml ios.yml; do gh workflow run "$w" --ref main || true; done
 
       - name: Report conflict
         if: steps.merge.outputs.conflict == 'true'
@@ -47,11 +58,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           title="Upstream sync conflict"
-          if gh issue list --state open --search "$title in:title" --json number -q '.[0].number' | grep -q .; then exit 0; fi
+          if gh issue list --state open --search "$title in:title" --json number -q '.[0].number' | grep -q .; then exit 1; fi
           gh issue create --title "$title" --body "Upstream changes clash with your changes. Fix locally:
 
           \`\`\`
-          git checkout riff
+          git checkout main
           git pull
           git fetch upstream
           git merge upstream/main   # fix conflicts, then commit
